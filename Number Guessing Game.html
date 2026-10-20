@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number Guessing Game</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;background:#ffe6f2;font-family:Arial,sans-serif;color:#555}
+.game{width:min(500px,100%);text-align:center}h1{margin:10px 0;font-size:clamp(28px,7vw,38px);color:#c94f88}
+.subtitle{font-size:16px;line-height:1.5;margin:0 0 22px}.box{background:#fff7fb;border:2px solid #f2a7c7;border-radius:14px;padding:28px 22px;box-shadow:0 8px 25px rgba(201,79,136,.08)}
+label{display:block;font-size:18px;font-weight:700;margin-bottom:12px}input{width:min(260px,100%);padding:13px 15px;border:2px solid #e7a4c4;border-radius:10px;outline:none;font-size:20px;text-align:center}
+input:focus{border-color:#d95c91}button{border:0;border-radius:10px;color:#fff;font-weight:700;cursor:pointer;font-size:16px;padding:12px 24px;margin-top:14px;min-height:48px}
+.guess{background:#e879a9}.again{background:#f3a2c4}.message{min-height:58px;margin:20px 0 5px;font-size:16px;line-height:1.5}.attempts{font-size:15px;color:#777;margin:10px 0 0}.footer{margin-top:18px;color:#b87898;font-size:13px}button:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:420px){body{padding:14px}.box{padding:24px 16px}}
+</style>
+</head>
+<body>
+<main class="game">
+<h1>🌸 Number Guessing Game 🌸</h1>
+<p class="subtitle">I'm thinking of a number between 1 and 100...<br>Can you guess it? ♡</p>
+<section class="box">
+<label for="guess">Enter your guess 💭</label>
+<input id="guess" type="number" min="1" max="100" inputmode="numeric" autocomplete="off"><br>
+<button class="guess" id="guessButton">💗 Guess</button>
+<div class="message" id="message">🌷 I'm thinking of a number...<br>Can you guess it? ♡</div>
+<div class="attempts" id="attempts">💗 Attempts: 0</div>
+</section>
+<button class="again" id="againButton">🌷 Play Again</button>
+<div class="footer">♡ Have fun guessing! ♡</div>
+</main>
+<script>
+let secretNumber=Math.floor(Math.random()*100)+1,attempts=0;
+const input=document.getElementById("guess"),guessButton=document.getElementById("guessButton"),againButton=document.getElementById("againButton"),message=document.getElementById("message"),attemptsLabel=document.getElementById("attempts");
+function checkGuess(){
+ const guess=Number(input.value);
+ if(!Number.isInteger(guess)||guess<1||guess>100){message.innerHTML="🥺 Please enter a number between 1 and 100!";message.style.color="#d94f8c";input.focus();return}
+ attempts++;attemptsLabel.textContent=`💗 Attempts: ${attempts}`;
+ if(guess<secretNumber){message.textContent="💭 Too low! Try a bigger number ↑";message.style.color="#8b6bb1"}
+ else if(guess>secretNumber){message.textContent="💭 Too high! Try a smaller number ↓";message.style.color="#8b6bb1"}
+ else{message.textContent=`🎉 You got it! The number was ${secretNumber}! 🎉`;message.style.color="#d94f8c";guessButton.disabled=true;input.disabled=true}
+}
+function playAgain(){secretNumber=Math.floor(Math.random()*100)+1;attempts=0;input.value="";input.disabled=false;guessButton.disabled=false;attemptsLabel.textContent="💗 Attempts: 0";message.innerHTML="🌷 I'm thinking of a number...<br>Can you guess it? ♡";message.style.color="#555";input.focus()}
+guessButton.onclick=checkGuess;againButton.onclick=playAgain;input.onkeydown=e=>{if(e.key==="Enter")checkGuess()};input.focus();
+</script>
+</body></html>
